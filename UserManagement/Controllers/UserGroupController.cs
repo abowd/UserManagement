@@ -23,11 +23,27 @@ namespace UserManagement.Controllers
             _taskUser = taskUser;
         }
         [HttpGet]
+        [Route("GetUserTaskList")]
         public async Task<List<TaskDto>> GetUserTaskList(int userGroupId)
         {
             var user = await _taskUser.Set<Models.Task>().ToListAsync().ConfigureAwait(false);
             user = user.Where(x => x.UserGroupId == userGroupId).ToList();
             return _mapper.Map<List<Models.Task>, List<TaskDto>>(user);
+        }
+        [HttpGet]
+        [Route("GetUserGroupList")]
+        public async Task<List<UserGroupDto>> GetUserGroupList()
+        {
+            var data = await _taskUser.UserGroups.ToListAsync().ConfigureAwait(false);
+            return _mapper.Map<List<UserGroup>, List<UserGroupDto>>(data);
+        }
+        [HttpPost]
+        [Route("AddUserGroup")]
+        public async System.Threading.Tasks.Task AddUserGroup(UserGroupDto user)
+        {
+            var data = _mapper.Map<UserGroupDto, UserGroup>(user);
+            await _taskUser.UserGroups.AddAsync(data).ConfigureAwait(false);
+            await _taskUser.SaveChangesAsync();
         }
     }
 }

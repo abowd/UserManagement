@@ -36,7 +36,7 @@ namespace UserManagement
                 option.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>(
+            services.AddIdentity<ApplicationUser, IdentityRole>(
            options =>
            {
                options.Password.RequireDigit = false;
